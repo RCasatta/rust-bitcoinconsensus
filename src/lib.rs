@@ -149,6 +149,7 @@ pub fn verify_with_flags (spent_output_script: &[u8], amount: u64, spending_tran
             &mut error
         );
         if ret != 1 {
+            println!("ret:{}", ret);
             Err(error)
         } else {
             Ok(())
