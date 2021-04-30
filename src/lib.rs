@@ -13,6 +13,9 @@
 //See the License for the specific language governing permissions and
 //limitations under the License.
 //
+
+mod verify_flag;
+
 extern crate libc;
 
 use libc::{c_int,c_uchar, c_uint};
@@ -73,13 +76,13 @@ pub fn height_to_flags(height: u32) -> u32 {
     if height > 170059 {
         flag |= VERIFY_P2SH;
     }
-    if height > 363724 {
+    if height > 363724 {  // BIP66Height - 1 ???   BIP66Height = 363725;      (block.nVersion < 3 && nHeight >= consensusParams.BIP66Height)
         flag |= VERIFY_DERSIG;
     }
-    if height > 388381 {
+    if height > 388381 {  // BIP65Height    //        (block.nVersion < 4 && nHeight >= consensusParams.BIP65Height))
         flag |= VERIFY_CHECKLOCKTIMEVERIFY;
     }
-    if height > 419328 {
+    if height > 419328 {  // CSVHeight
         flag |= VERIFY_CHECKSEQUENCEVERIFY;
     }
     if height > 481824 {
@@ -207,6 +210,15 @@ mod tests {
             18393430 , 0
         ).is_err());
 
+    }
+
+    #[test]
+    fn testnet_b3c19d78b4953b694717a47d9852f8ea1ccd4cf93a45ba2e43a0f97d7cdb2655() {
+        assert!(verify_test(
+            "a914290bba32a49315789a030bb40b0047f8fb90ff6687",
+            "010000000100450400da85fe10f77c5b74d06043003bc4d5c43a59c8478011d28147521a5e000000002625512102ca2a810ab17249b6033a038de563983881b4069270183f3c0aba945653e4421651aeffffffff01b02e052a010000001976a914dbf89509176a975e41d04cc0af24cfc8de4394a988ac00000000",
+            5000000000 , 0
+        ).is_ok());
     }
 
     fn verify_test (spent : &str, spending :&str, amount :u64, input: usize) -> Result<(),Error> {
