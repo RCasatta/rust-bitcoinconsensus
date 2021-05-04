@@ -36,6 +36,7 @@ fn main() {
             .define("USE_NUM_NONE", "1")
             .define("USE_FIELD_INV_BUILTIN", "1")
             .define("USE_SCALAR_INV_BUILTIN", "1")
+            .define("ENABLE_ENDOMORPHISM", "1")
             // Technically libconsensus doesn't require the recovery feautre, but `pubkey.cpp` does.
             .define("ENABLE_MODULE_RECOVERY", "1")
             // The actual libsecp256k1 C code.
